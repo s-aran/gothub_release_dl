@@ -5,6 +5,7 @@ import (
 	"os"
 
 	models_v0 "gothub_release_dl/models/v0"
+	models_v1 "gothub_release_dl/models/v1"
 )
 
 func main() {
@@ -13,5 +14,31 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
 	}
 
-	fmt.Println("%s", package_v0)
+	// fmt.Println(package_v0)
+
+	repos, installed, err := models_v1.FromV0(package_v0)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
+	}
+
+	// fmt.Println(repos)
+	// fmt.Println(installed)
+
+	models_v1.WriteToReposToml(repos, "repos.toml")
+	models_v1.WriteToInstalledToml(installed, "installed.toml")
+
+	repos, err = models_v1.ReadFromReposToml(("repos.toml"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
+	}
+
+	fmt.Println(repos)
+
+	installed, err = models_v1.ReadFromInstalledToml(("installed.toml"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
+	}
+
+	fmt.Println(installed)
+
 }
