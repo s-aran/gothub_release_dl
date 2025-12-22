@@ -41,4 +41,12 @@ func main() {
 
 	fmt.Println(installed)
 
+	config, err := models_v1.ReadFromConfigToml("config.toml")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
+	}
+	config = models_v1.LoadEnvironmentVariable(config)
+
+	fmt.Println(config.Auth.GithubApi)
+
 }
