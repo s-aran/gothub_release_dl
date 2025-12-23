@@ -6,6 +6,7 @@ import (
 
 	models_v0 "gothub_release_dl/models/v0"
 	models_v1 "gothub_release_dl/models/v1"
+	"gothub_release_dl/utils"
 )
 
 func main() {
@@ -49,4 +50,8 @@ func main() {
 
 	fmt.Println(config.Auth.GithubApi)
 
+	err = utils.GetReleaseList(config.Auth.GithubApi, "PowerShell/PowerShell")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", fmt.Sprintf("%s", err))
+	}
 }
